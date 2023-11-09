@@ -23,18 +23,47 @@ createAudio = (src) => {
   audio.controls = true;
   document.body.append(audio);
   audio.src = src;
+  return audio;
 }
 
-deleteAudio = () => selectAudio()?.remove();
-
-player = document.querySelector("#movie_player");
-playerResponse = player?.getPlayerResponse();
-adaptiveFormats = playerResponse?.streamingData?.adaptiveFormats;
-src = adaptiveFormats?.filter(({url, audioQuality}) => url && audioQuality)[0]?.url;
-deleteAudio();
-if (!src) {
-  console.error('src', src);
-  console.error('adaptiveFormats', adaptiveFormats);
-} else {
-  createAudio(src);
+deleteAudio = () => {
+  audio = selectAudio();
+  if (!audio) {
+    return;
+  }
+  audio.pause();
+  audio.remove();
 }
+
+getPlayer = () => document.querySelector("#movie_player");
+
+getAudioSrc = () => {
+  player = getPlayer();
+  playerResponse = player?.getPlayerResponse();
+  adaptiveFormats = playerResponse?.streamingData?.adaptiveFormats;
+  src = adaptiveFormats?.filter(({url, audioQuality}) => url && audioQuality)[0]?.url;
+  return src;
+}
+
+playAudio = async () => {
+  deleteAudio();
+  src = getAudioSrc();
+  if (!src) {
+    console.error('src', src);
+    console.error('adaptiveFormats', adaptiveFormats);
+    return;
+  }
+  player = getPlayer();
+  if (!player || player.isMuted()) {
+    return;
+  }
+  audio = createAudio(src);
+  await audio.play();
+  audio.currentTime = getPlayer().getCurrentTime();
+}
+
+addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    playAudio();
+  }
+});
