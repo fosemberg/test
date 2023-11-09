@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         youtube audio
 // @namespace    http://tampermonkey.net/
-// @version      0.9
+// @version      0.10
 // @description  try to take over the world!
 // @author       You
 // @match        https://m.youtube.com/*
@@ -62,6 +62,8 @@ playAudioIfNeed = async () => {
   await audio.play();
   audio.currentTime = player.getCurrentTime();
   audio.volume = 1;
+  setTimeout(() => {audio.volume = 1});
+  setTimeout(() => {audio.volume = 1}, 1000);
 }
 
 addEventListener("visibilitychange", () => {
