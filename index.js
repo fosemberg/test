@@ -1,7 +1,17 @@
+// ==UserScript==
+// @name         New Userscript
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://m.youtube.com/watch?v=lUDo3TW6DHw
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
+// @grant        none
+// ==/UserScript==
+
 ID = 'fosemberg-audio';
 
 selectAudio = () => document.querySelector(`#${ID}`);
-deleteAudio = () => selectAudio()?.remove();
 
 createAudio = (src) => {
   audio = document.createElement('audio');
@@ -14,6 +24,8 @@ createAudio = (src) => {
   document.body.append(audio);
   audio.src = src;
 }
+
+deleteAudio = () => selectAudio()?.remove();
 
 player = document.querySelector("#movie_player");
 playerResponse = player?.getPlayerResponse();
