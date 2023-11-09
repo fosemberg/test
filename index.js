@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         youtube audio
 // @namespace    http://tampermonkey.net/
-// @version      0.12
+// @version      0.13
 // @description  try to take over the world!
 // @author       You
 // @match        https://m.youtube.com/*
@@ -53,15 +53,15 @@ prepareAudio = async () => {
     console.error('adaptiveFormats', adaptiveFormats);
     return;
   }
+  audio = createAudio(src);
+}
+
+playAudio = () => {
   player = getPlayer();
   if (!player) {
     return;
   }
-  audio = createAudio(src);
   audio.currentTime = player.getCurrentTime();
-}
-
-playAudio = () => {
   audio.play();
 }
 
