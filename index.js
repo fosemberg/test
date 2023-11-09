@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         youtube audio
 // @namespace    http://tampermonkey.net/
-// @version      0.10
+// @version      0.11
 // @description  try to take over the world!
 // @author       You
 // @match        https://m.youtube.com/*
@@ -45,7 +45,7 @@ getAudioSrc = () => {
   return src;
 }
 
-playAudioIfNeed = async () => {
+prepareAudio = async () => {
   deleteAudio();
   src = getAudioSrc();
   if (!src) {
@@ -58,16 +58,15 @@ playAudioIfNeed = async () => {
     return;
   }
   audio = createAudio(src);
-  audio.volume = 0;
-  await audio.play();
-  audio.currentTime = player.getCurrentTime();
-  audio.volume = 1;
-  setTimeout(() => {audio.volume = 1});
-  setTimeout(() => {audio.volume = 1}, 1000);
 }
 
+playAudio = () => {
+  audio.play();
+}
+
+prepareAudio();
 addEventListener("visibilitychange", () => {
   if (document.hidden) {
-    playAudioIfNeed();
+    playAudio();
   }
 });
